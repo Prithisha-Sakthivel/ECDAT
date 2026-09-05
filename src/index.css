@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: #070a0f;
+    color: #e2e8f0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    letter-spacing: -0.01em;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Compact technical inputs */
+  input, select, textarea {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Precise Command Center Scrollbars */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070a0f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a253a;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #253856;
+}
+
+/* SOC Panel Style helper */
+.soc-panel {
+  background-color: #0b1019;
+  border: 1px solid #1a2436;
+}
+
+.soc-panel-elevated {
+  background-color: #0f1623;
+  border: 1px solid #22304b;
+}
+
+/* Dotted leader for key-value telemetry metrics */
+.leader-dots {
+  background-image: radial-gradient(circle, #334155 1px, transparent 1px);
+  background-position: bottom;
+  background-size: 6px 2px;
+  background-repeat: repeat-x;
+}
