@@ -12,7 +12,10 @@ import {
   PostureTimelinePoint,
   MigrationConflictDetail,
   MigrationReadinessFactor,
-  AttackSurfaceNode
+  AttackSurfaceNode,
+  ApplicationHeatmapItem,
+  PqcRecommendation,
+  NormalizedArtefact
 } from '../types';
 
 export const SYNTHETIC_ENV_DISCLAIMER = "SIMULATION ENVIRONMENT — ALL DATA IS SYNTHETIC";
@@ -1322,4 +1325,376 @@ export const ATTACK_SURFACE_NODES: AttackSurfaceNode[] = [
     notes: 'Encrypted at rest with 256-bit symmetric key; quantum secure under Grover margin.'
   }
 ];
+
+// Module C: Application Risk Heatmap Data (Exact Sum Invariant: 4,382 = 317 Critical + 842 High + 1,420 Medium + 1,803 Low)
+export const APPLICATION_HEATMAP_DATA: ApplicationHeatmapItem[] = [
+  {
+    id: 'app-hm-01',
+    appName: 'Authentication Service',
+    team: 'Identity & Access Platform',
+    criticality: 'Critical',
+    totalArtefacts: 612,
+    criticalCount: 84,
+    highCount: 120,
+    mediumCount: 210,
+    lowCount: 198,
+    shelfLifeX: 15,
+    migrationTimeY: 6,
+    moscaViolated: true, // 15 + 6 = 21 > 8 (CRQC in 2034)
+    dominantAlgo: 'RSA-2048 (Digital Signatures)',
+    riskScore: 92,
+    status: 'Violated'
+  },
+  {
+    id: 'app-hm-02',
+    appName: 'Citizen Services Portal',
+    team: 'Citizen Experience Team',
+    criticality: 'Critical',
+    totalArtefacts: 840,
+    criticalCount: 68,
+    highCount: 142,
+    mediumCount: 290,
+    lowCount: 340,
+    shelfLifeX: 12,
+    migrationTimeY: 4,
+    moscaViolated: true, // 12 + 4 = 16 > 8
+    dominantAlgo: 'ECDSA P-256 / TLS 1.2',
+    riskScore: 84,
+    status: 'Violated'
+  },
+  {
+    id: 'app-hm-03',
+    appName: 'Payment Gateway',
+    team: 'Treasury & Settlement',
+    criticality: 'Critical',
+    totalArtefacts: 530,
+    criticalCount: 62,
+    highCount: 118,
+    mediumCount: 160,
+    lowCount: 190,
+    shelfLifeX: 10,
+    migrationTimeY: 5,
+    moscaViolated: true, // 10 + 5 = 15 > 8
+    dominantAlgo: 'RSA-2048 / 3DES (Legacy Bank Link)',
+    riskScore: 88,
+    status: 'Violated'
+  },
+  {
+    id: 'app-hm-04',
+    appName: 'Document Mgmt System',
+    team: 'Archival & Compliance',
+    criticality: 'High',
+    totalArtefacts: 480,
+    criticalCount: 32,
+    highCount: 95,
+    mediumCount: 175,
+    lowCount: 178,
+    shelfLifeX: 20,
+    migrationTimeY: 4,
+    moscaViolated: true, // 20 + 4 = 24 > 8
+    dominantAlgo: 'RSA-3072 / AES-128-CBC',
+    riskScore: 76,
+    status: 'Violated'
+  },
+  {
+    id: 'app-hm-05',
+    appName: 'State Procurement Portal',
+    team: 'Contracting & Tenders',
+    criticality: 'High',
+    totalArtefacts: 420,
+    criticalCount: 24,
+    highCount: 86,
+    mediumCount: 140,
+    lowCount: 170,
+    shelfLifeX: 8,
+    migrationTimeY: 3,
+    moscaViolated: true, // 8 + 3 = 11 > 8
+    dominantAlgo: 'ECDSA P-384 / SHA-256',
+    riskScore: 71,
+    status: 'Violated'
+  },
+  {
+    id: 'app-hm-06',
+    appName: 'Police RMS & Biometrics',
+    team: 'Law Enforcement IT',
+    criticality: 'Critical',
+    totalArtefacts: 620,
+    criticalCount: 35,
+    highCount: 150,
+    mediumCount: 185,
+    lowCount: 250,
+    shelfLifeX: 25,
+    migrationTimeY: 5,
+    moscaViolated: true, // 25 + 5 = 30 > 8
+    dominantAlgo: 'RSA-2048 / Custom S-Box (Proprietary)',
+    riskScore: 86,
+    status: 'Violated'
+  },
+  {
+    id: 'app-hm-07',
+    appName: 'Health Data Exchange',
+    team: 'Public Health Informatics',
+    criticality: 'Critical',
+    totalArtefacts: 460,
+    criticalCount: 8,
+    highCount: 81,
+    mediumCount: 160,
+    lowCount: 211,
+    shelfLifeX: 20,
+    migrationTimeY: 4,
+    moscaViolated: true, // 20 + 4 = 24 > 8
+    dominantAlgo: 'ECDSA P-256 / AES-256-GCM',
+    riskScore: 79,
+    status: 'Violated'
+  },
+  {
+    id: 'app-hm-08',
+    appName: 'State Admin Console',
+    team: 'Infrastructure Operations',
+    criticality: 'Medium',
+    totalArtefacts: 420,
+    criticalCount: 4,
+    highCount: 50,
+    mediumCount: 100,
+    lowCount: 266,
+    shelfLifeX: 5,
+    migrationTimeY: 2,
+    moscaViolated: false, // 5 + 2 = 7 <= 8 (Compliant)
+    dominantAlgo: 'SSH-RSA (Admin Keys) / AES-256-CTR',
+    riskScore: 48,
+    status: 'Compliant'
+  }
+];
+
+// Module D: NIST-Standardized PQC Recommendation Engine & Multi-Factor Tradeoffs
+export const PQC_RECOMMENDATIONS: PqcRecommendation[] = [
+  {
+    id: 'rec-01',
+    currentAlgorithm: 'RSA-2048 / RSA-3072 / RSA-4096',
+    cryptoType: 'Digital Signature',
+    recommendedPqc: 'ML-DSA-65 (FIPS 204 / Dilithium)',
+    nistStandard: 'NIST FIPS 204 (Module-Lattice-Based Digital Signature Standard, Aug 2024)',
+    hybridOption: 'Dual-Signature (Classical RSA-2048 + ML-DSA-65 in composite X.509)',
+    latencyScore: 8,
+    keySizeOverhead: '1,952 B public key (~7.6x overhead vs 256 B RSA key)',
+    sigSizeOverhead: '3,309 B signature (~13x overhead vs 256 B RSA sig)',
+    reengineeringCost: 'Medium',
+    libraryMaturity: 'Standardized / FIPS Ratified',
+    justification: 'Module-lattice digital signature provides strong algebraic quantum resistance with fast signature generation and verification. Primary choice for high-volume authentication assertions and digital certificates.',
+    tradeoffNotes: 'Signature size expands from 256 bytes to 3.3 KB. Requires verifying that network proxies and TLS record buffers can accommodate packets without packet fragmentation.',
+    exampleAssets: ['Authentication Service (Token Signer)', 'Procurement Digital Notary']
+  },
+  {
+    id: 'rec-02',
+    currentAlgorithm: 'ECDSA (P-256 / P-384 / secp256k1)',
+    cryptoType: 'Digital Signature',
+    recommendedPqc: 'ML-DSA-44 or Falcon-512',
+    nistStandard: 'NIST FIPS 204 (ML-DSA) & NIST Selected Round 4 (Falcon)',
+    hybridOption: 'Hybrid Ed25519 + ML-DSA-44',
+    latencyScore: 9,
+    keySizeOverhead: '1,312 B public key (ML-DSA-44) / 897 B (Falcon-512)',
+    sigSizeOverhead: '2,420 B signature (ML-DSA-44) / 666 B (Falcon-512)',
+    reengineeringCost: 'Low',
+    libraryMaturity: 'Standardized / FIPS Ratified',
+    justification: 'Replaces Shor-vulnerable elliptic curve discrete logarithm schemes. Falcon offers the smallest post-quantum signature size (666 B) for bandwidth-constrained API tokens, while ML-DSA-44 has simpler constant-time implementations without floating-point requirements.',
+    tradeoffNotes: 'Falcon requires careful floating-point timing mitigation; ML-DSA-44 is the safer implementation baseline for high-assurance microservices.',
+    exampleAssets: ['Citizen Services Portal Session Tokens', 'Health Exchange Ingress']
+  },
+  {
+    id: 'rec-03',
+    currentAlgorithm: 'Diffie-Hellman / ECDH (P-256, X25519)',
+    cryptoType: 'Asymmetric Key Exchange',
+    recommendedPqc: 'ML-KEM-768 (FIPS 203 / Kyber)',
+    nistStandard: 'NIST FIPS 203 (Module-Lattice Key-Encapsulation Mechanism, Aug 2024)',
+    hybridOption: 'Hybrid X25519 + ML-KEM-768 (IETF draft-ietf-tls-hybrid-design)',
+    latencyScore: 9,
+    keySizeOverhead: '1,184 B public key, 1,088 B ciphertext encapsulation',
+    sigSizeOverhead: 'N/A (Key Encapsulation)',
+    reengineeringCost: 'Low',
+    libraryMaturity: 'Standardized / FIPS Ratified',
+    justification: 'De-facto post-quantum key encapsulation standard for TLS 1.3 session establishment. Prevents retrospective decryption of stored network sessions (Harvest Now Decrypt Later). Supported in major browsers and modern web servers.',
+    tradeoffNotes: 'Negligible latency impact (<0.1ms computation). Hybrid X25519+ML-KEM provides dual protection: quantum security plus classical compliance fallback.',
+    exampleAssets: ['Edge Reverse Proxy (TLS Termination)', 'Payment Gateway Ingress API']
+  },
+  {
+    id: 'rec-04',
+    currentAlgorithm: 'Long-Term Notary / State Archival Signatures',
+    cryptoType: 'Digital Signature',
+    recommendedPqc: 'SLH-DSA-SHA2-128s (FIPS 205 / SPHINCS+)',
+    nistStandard: 'NIST FIPS 205 (Stateless Hash-Based Digital Signature Standard, Aug 2024)',
+    hybridOption: 'Composite RSA-4096 + SLH-DSA',
+    latencyScore: 5,
+    keySizeOverhead: '32 B public key (Compact public key)',
+    sigSizeOverhead: '7,856 B signature (Large signature overhead)',
+    reengineeringCost: 'Medium',
+    libraryMaturity: 'Standardized / FIPS Ratified',
+    justification: 'Stateless hash-based signature whose security relies solely on the collision resistance of SHA-256, rather than structured lattice problems. Recommended for 20-30 year long-term legal documents and root CA certificates where mathematical trust must be absolute.',
+    tradeoffNotes: 'Signing is computationally heavier (~10ms) and signature length is ~7.8 KB. Ideal for batch archival and root certificates, but not recommended for high-frequency low-latency microservice requests.',
+    exampleAssets: ['Document Management Archival Root', 'State Notary Timestamping Service']
+  },
+  {
+    id: 'rec-05',
+    currentAlgorithm: 'AES-128 (CBC / ECB / CTR)',
+    cryptoType: 'Symmetric Encryption',
+    recommendedPqc: 'AES-256-GCM (Grover Quantum Security Margin)',
+    nistStandard: 'NIST SP 800-38D / CNSA 2.0 Guidance',
+    hybridOption: 'N/A (Direct Classical Upgrade)',
+    latencyScore: 10,
+    keySizeOverhead: '32 B key (256-bit key length vs 128-bit)',
+    sigSizeOverhead: 'N/A',
+    reengineeringCost: 'Low',
+    libraryMaturity: 'Standardized / FIPS Ratified',
+    justification: "Grover's algorithm provides quadratic speedup for brute-force symmetric search, halving effective security: AES-128 provides only 64 bits of quantum security (unacceptable), whereas AES-256 retains 128 bits of security (fully quantum safe against all known CRQC attacks).",
+    tradeoffNotes: 'Hardware-accelerated AES-NI ensures zero measurable performance degradation. Simply requires re-keying and cipher suite configuration updates.',
+    exampleAssets: ['Citizen Biometric Vault (At-Rest DB)', 'Treasury Clearing Settlement Store']
+  }
+];
+
+// Module A: Multi-Language Discovery Sample Snippets for Interactive Scanner
+export const SAMPLE_SCAN_SNIPPETS = [
+  {
+    id: 'py-01',
+    name: 'Python (PyCryptodome & SSL)',
+    language: 'Python',
+    filename: 'auth_handler.py',
+    code: `from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_OAEP, AES
+import ssl, os
+
+def generate_tokens(user_id):
+    # Vulnerable: RSA-2048 keypair generation
+    key = RSA.generate(2048)
+    private_key = key.export_key()
+    
+    # Vulnerable: Legacy symmetric AES-128-CBC
+    session_key = os.urandom(16)
+    cipher = AES.new(session_key, AES.MODE_CBC, iv=os.urandom(16))
+    
+    # Insecure TLS 1.0/1.1 context
+    ctx = ssl.SSLContext(ssl.PROTOCOL_TLSv1_1)
+    return private_key, session_key`
+  },
+  {
+    id: 'java-01',
+    name: 'Java (BouncyCastle & JCA)',
+    language: 'Java',
+    filename: 'CryptoService.java',
+    code: `import java.security.KeyPairGenerator;
+import java.security.KeyPair;
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
+public class CryptoService {
+    public void initSecurity() throws Exception {
+        // Quantum-Vulnerable: RSA 2048 bit modulus
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+        kpg.initialize(2048);
+        KeyPair pair = kpg.generateKeyPair();
+
+        // Quantum-Vulnerable: Diffie-Hellman Key Exchange
+        KeyPairGenerator dhKpg = KeyPairGenerator.getInstance("DiffieHellman");
+        dhKpg.initialize(2048);
+
+        // Weak Legacy: DESede (Triple-DES)
+        KeyGenerator desGen = KeyGenerator.getInstance("DESede");
+        SecretKey desKey = desGen.generateKey();
+    }
+}`
+  },
+  {
+    id: 'c-01',
+    name: 'C/C++ (OpenSSL EVP Core)',
+    language: 'C',
+    filename: 'token_signer.c',
+    code: `#include <openssl/evp.h>
+#include <openssl/rsa.h>
+#include <openssl/ssl.h>
+
+int sign_assertion(const unsigned char *data, size_t len) {
+    EVP_PKEY_CTX *ctx;
+    EVP_PKEY *pkey = NULL;
+    
+    // OpenSSL 1.1.1u RSA-2048 key generation
+    ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
+    EVP_PKEY_keygen_init(ctx);
+    EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, 2048);
+    EVP_PKEY_keygen(ctx, &pkey);
+    
+    // Insecure TLS context configuration
+    SSL_CTX *ssl_ctx = SSL_CTX_new(TLS_client_method());
+    SSL_CTX_set_min_proto_version(ssl_ctx, TLS1_VERSION);
+    return 0;
+}`
+  },
+  {
+    id: 'go-01',
+    name: 'Go (crypto/rsa & tls)',
+    language: 'Go',
+    filename: 'gateway.go',
+    code: `package main
+
+import (
+    "crypto/rand"
+    "crypto/rsa"
+    "crypto/tls"
+    "crypto/x509"
+)
+
+func SetupGateway() (*rsa.PrivateKey, error) {
+    // Quantum-Vulnerable: RSA 2048
+    privKey, err := rsa.GenerateKey(rand.Reader, 2048)
+    if err != nil {
+        return nil, err
+    }
+
+    // TLS 1.2 configuration with RSA cipher suites
+    cfg := &tls.Config{
+        MinVersion: tls.VersionTLS12,
+        CipherSuites: []uint16{
+            tls.TLS_RSA_WITH_AES_128_GCM_SHA256,
+        },
+    }
+    _ = cfg
+    return privKey, nil
+}`
+  },
+  {
+    id: 'bin-01',
+    name: 'Binary / ELF (Symbols & S-Box)',
+    language: 'Binary / C',
+    filename: 'libcustom_crypt.so',
+    code: `// Linked Shared Libraries: libcrypto.so.1.1, libssl.so.1.1
+// Symbol Table: RSA_new, EVP_DigestSignInit, DH_new
+// Embedded Cryptographic Constants (AES S-Box detected at offset 0x00042a10):
+static const unsigned char aes_sbox[256] = {
+    0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
+    0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0, 0xad, 0xd4, 0xa2, 0xaf, 0x9c, 0xa4, 0x72, 0xc0,
+    0xb7, 0xfd, 0x93, 0x26, 0x36, 0x3f, 0xf7, 0xcc, 0x34, 0xa5, 0xe5, 0xf1, 0x71, 0xd8, 0x31, 0x15,
+    // [Truncated 208 additional constant bytes]
+};`
+  },
+  {
+    id: 'cloud-01',
+    name: 'Cloud KMS & HSM Stubs',
+    language: 'Python / SDK',
+    filename: 'kms_vault.py',
+    code: `import boto3
+from google.cloud import kms_v1
+import PyKCS11
+
+# AWS KMS reference (Flagged for API verification)
+kms_client = boto3.client('kms', region_name='ap-south-1')
+response = kms_client.decrypt(
+    CiphertextBlob=b'...',
+    KeyId='arn:aws:kms:ap-south-1:123456789012:key/rsa-2048-key'
+)
+
+# Hardware Security Module (PKCS#11 / SunPKCS11 SDK call)
+pkcs11 = PyKCS11.PyKCS11Lib()
+pkcs11.load('C:\\\\Program Files\\\\SafeNet\\\\ProtectToolkit\\\\libCryptoki2.dll')
+session = pkcs11.openSession(slot=0)`
+  }
+];
+
 

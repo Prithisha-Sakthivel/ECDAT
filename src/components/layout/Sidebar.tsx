@@ -114,6 +114,13 @@ export const Sidebar: React.FC = () => {
       sectionTitle: 'PLANNING',
       items: [
         {
+          id: 'recommendations',
+          label: 'PQC Recommendations',
+          icon: Sparkles,
+          badge: 'FIPS 204',
+          badgeTone: 'accent'
+        },
+        {
           id: 'simulator',
           label: 'Impact Simulator',
           icon: Workflow

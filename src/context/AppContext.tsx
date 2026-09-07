@@ -11,7 +11,10 @@ import {
 import { 
   ARTEFACTS_CATALOG, 
   UNKNOWN_CRYPTO_CATALOG, 
-  IMPACT_SCENARIOS 
+  IMPACT_SCENARIOS,
+  DEMO_ORGANIZATION,
+  APPLICATION_HEATMAP_DATA,
+  PQC_RECOMMENDATIONS
 } from '../data/mockData';
 
 interface AppContextType {
@@ -87,6 +90,18 @@ interface AppContextType {
   setSelectedLedgerDnaId: (dnaId: string | null) => void;
   openLedgerForDna: (dnaId: string) => void;
 
+  // Mosca's Theorem Engine Parameters (Risk = (X + Y) > Z)
+  moscaZ: number; // Configurable Time to CRQC / Q-Day (years)
+  setMoscaZ: (z: number) => void;
+  
+  // Dynamic Inventory & Classification
+  artefacts: CryptoArtefact[];
+  updateArtefactClassification: (id: string, updates: Partial<CryptoArtefact>) => void;
+  
+  // Real File Exports
+  exportCycloneDxCbomJson: () => void;
+  exportAuditReportJson: () => void;
+
   // Navigation helper to step through the 7 stages
   navigateToStage: (stage: 'discover' | 'understand' | 'connect' | 'assess' | 'prioritize' | 'simulate' | 'migrate') => void;
 }
@@ -97,6 +112,137 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [currentTab, setCurrentTab] = useState<NavigationTab>('overview');
   const [activeEnv, setActiveEnv] = useState<EnvironmentType>('Production');
   
+  // Mosca's Theorem Horizon Z (default 8 years to CRQC)
+  const [moscaZ, setMoscaZ] = useState<number>(8);
+
+  // Dynamic Artefacts Catalog for Classification tagging
+  const [artefacts, setArtefacts] = useState<CryptoArtefact[]>(ARTEFACTS_CATALOG);
+
+  const updateArtefactClassification = (id: string, updates: Partial<CryptoArtefact>) => {
+    setArtefacts(prev => prev.map(art => {
+      if (art.id === id || art.dnaId === id) {
+        const updated = { ...art, ...updates };
+        if (selectedArtefact?.id === art.id) {
+          setSelectedArtefact(updated);
+        }
+        return updated;
+      }
+      return art;
+    }));
+  };
+
+  // Real CycloneDX 1.6 CBOM Export Engine
+  const exportCycloneDxCbomJson = () => {
+    const cbomPayload = {
+      bomFormat: "CycloneDX",
+      specVersion: "1.6",
+      serialNumber: "urn:uuid:7f83b165-7ff1-4c53-b92d-c18148a1d65d",
+      version: 1,
+      metadata: {
+        timestamp: new Date().toISOString(),
+        tools: [
+          {
+            vendor: "ECDAT Cyber Operations",
+            name: "Enterprise Cryptographic Discovery & Analysis Tool",
+            version: "2.4.0",
+            hashes: [
+              {
+                alg: "SHA-256",
+                content: "7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069"
+              }
+            ]
+          }
+        ],
+        component: {
+          type: "application",
+          name: "Demo Government Enterprise Cryptographic Estate",
+          version: "2026.3-SYNTHETIC",
+          description: "Enterprise Cryptographic Bill of Materials covering 4,382 discovered cryptographic assets"
+        },
+        authors: [
+          {
+            name: "NTRO PS-26164 Quantum Defense Workgroup",
+            email: "security-ops@ecdat.internal"
+          }
+        ]
+      },
+      components: artefacts.map(art => ({
+        type: "cryptographic-asset",
+        bomRef: art.dnaId,
+        name: art.name,
+        group: art.application,
+        version: art.libraryVersion,
+        description: `${art.algorithm} in ${art.location}`,
+        cryptoProperties: {
+          assetType: art.cryptoType === 'Asymmetric' ? 'algorithm' : art.cryptoType === 'Protocol' ? 'protocol' : 'algorithm',
+          algorithmProperties: {
+            primitive: art.purpose.includes('Signature') ? 'signature' : art.purpose.includes('Exchange') ? 'key-derivation' : 'block-cipher',
+            parameterSetIdentifier: art.keySize || '2048',
+            classicalSecurityLevel: art.algorithm.includes('2048') ? 112 : art.algorithm.includes('256') ? 128 : 256,
+            nistQuantumSecurityLevel: art.quantumStatus === 'Quantum-Vulnerable' ? 0 : 3,
+            cryptoFunctions: [art.purpose.split('/')[0].trim()]
+          },
+          protocolProperties: art.protocol ? {
+            type: "tls",
+            version: art.protocol
+          } : undefined,
+          certificateProperties: art.certificate ? {
+            subjectName: art.certificate
+          } : undefined
+        }
+      }))
+    };
+
+    const blob = new Blob([JSON.stringify(cbomPayload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `ecdat-cbom-cyclonedx-1.6-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // Real Audit Report Export
+  const exportAuditReportJson = () => {
+    const reportPayload = {
+      title: "ECDAT Executive & Technical Cryptographic Audit Report",
+      standard: "CycloneDX 1.6 / Mosca Theorem (X+Y > Z) / CNSA 2.0",
+      generatedAt: new Date().toISOString(),
+      organization: DEMO_ORGANIZATION,
+      summary: {
+        totalArtefacts: 4382,
+        critical: 317,
+        high: 842,
+        medium: 1420,
+        low: 1803,
+        unclassifiedRequiringReview: 46,
+        moscaCrqcYearsZ: moscaZ,
+        targetCrqcYear: new Date().getFullYear() + moscaZ,
+        highPriorityRemediationTarget: "RSA-2048 in Authentication Service (P1 Immediate)"
+      },
+      moscaTheoremEvaluation: {
+        equation: "Risk = (X + Y) > Z",
+        crqcEstimatedArrivalYears: moscaZ,
+        shorBreakingVulnerabilities: ["RSA-2048", "ECDSA P-256", "Diffie-Hellman"],
+        groverHalvingVulnerabilities: ["AES-128 (effective 64-bit margin)"],
+        candidateRecommendations: PQC_RECOMMENDATIONS
+      },
+      auditedApplications: APPLICATION_HEATMAP_DATA
+    };
+
+    const blob = new Blob([JSON.stringify(reportPayload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `ecdat-quantum-audit-report-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   // Artefact Inspection
   const [selectedArtefact, setSelectedArtefact] = useState<CryptoArtefact | null>(ARTEFACTS_CATALOG[0]);
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -393,6 +539,12 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       selectedLedgerDnaId,
       setSelectedLedgerDnaId,
       openLedgerForDna,
+      moscaZ,
+      setMoscaZ,
+      artefacts,
+      updateArtefactClassification,
+      exportCycloneDxCbomJson,
+      exportAuditReportJson,
       navigateToStage
     }}>
       {children}

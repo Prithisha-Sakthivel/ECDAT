@@ -37,6 +37,7 @@ export const Header: React.FC = () => {
     risk: { group: 'ANALYSIS', label: 'Quantum Risk Intelligence' },
     'attack-surface': { group: 'ANALYSIS', label: 'Cryptographic Attack Surface' },
     reports: { group: 'ANALYSIS', label: 'Cryptographic Bill of Materials (CBOM)' },
+    recommendations: { group: 'PLANNING', label: 'NIST PQC Recommendation Engine' },
     simulator: { group: 'PLANNING', label: 'What-If Impact Simulator' },
     roadmap: { group: 'PLANNING', label: 'Migration Roadmap' },
     policy: { group: 'GOVERNANCE', label: 'Cryptographic Policy Engine' },

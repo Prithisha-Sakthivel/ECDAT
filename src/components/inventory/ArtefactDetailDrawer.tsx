@@ -38,11 +38,25 @@ export const ArtefactDetailDrawer: React.FC = () => {
     triggerSimulateDeprecationFromGraph,
     setCurrentTab,
     openLedgerForDna,
-    openDecisionTrace
+    openDecisionTrace,
+    updateArtefactClassification
   } = useApp();
 
   const [copiedDna, setCopiedDna] = useState<boolean>(false);
   const [copiedHash, setCopiedHash] = useState<boolean>(false);
+  const [taggedCriticality, setTaggedCriticality] = useState<'Critical' | 'High' | 'Medium' | 'Low'>('Critical');
+  const [taggedShelfLife, setTaggedShelfLife] = useState<number>(15);
+  const [taggedRotation, setTaggedRotation] = useState<string>('Annual (365d)');
+  const [isClassificationSaved, setIsClassificationSaved] = useState<boolean>(false);
+
+  const handleSaveClassification = () => {
+    if (!selectedArtefact) return;
+    updateArtefactClassification(selectedArtefact.id, {
+      businessCriticality: taggedCriticality
+    });
+    setIsClassificationSaved(true);
+    setTimeout(() => setIsClassificationSaved(false), 2500);
+  };
 
   if (!isDrawerOpen || !selectedArtefact) return null;
 
@@ -241,6 +255,85 @@ export const ArtefactDetailDrawer: React.FC = () => {
 
                 <div className="pt-1.5 border-t border-defense-700/60 text-[10px] text-slate-400">
                   Multiple observation vectors confirm non-ephemeral usage across production identity endpoints.
+                </div>
+              </div>
+
+              {/* Module B: Interactive Classification Engine (User Tagging) */}
+              <div className="border border-cyan-500/40 bg-cyan-950/20 rounded p-3 space-y-2.5">
+                <div className="flex items-center justify-between border-b border-cyan-500/30 pb-1.5">
+                  <span className="text-[10px] uppercase tracking-wider text-cyan-300 font-bold flex items-center gap-1.5">
+                    <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" />
+                    Classification Engine (User-Input Tagging)
+                  </span>
+                  {isClassificationSaved && (
+                    <span className="text-[9px] text-emerald-300 bg-emerald-950 border border-emerald-500/50 px-1.5 py-0.2 rounded font-bold">
+                      TAGS PERSISTED
+                    </span>
+                  )}
+                </div>
+
+                <div className="space-y-2 text-[11px]">
+                  <div>
+                    <span className="text-slate-400 text-[10px] block mb-1">Business Criticality Tagging:</span>
+                    <div className="grid grid-cols-4 gap-1.5">
+                      {(['Critical', 'High', 'Medium', 'Low'] as const).map((crit) => (
+                        <button
+                          key={crit}
+                          type="button"
+                          onClick={() => setTaggedCriticality(crit)}
+                          className={`py-1 rounded text-[10px] font-bold border transition-colors ${
+                            taggedCriticality === crit
+                              ? crit === 'Critical' ? 'bg-red-500/20 border-red-500 text-red-300' :
+                                crit === 'High' ? 'bg-amber-500/20 border-amber-500 text-amber-300' :
+                                'bg-emerald-500/20 border-emerald-500 text-emerald-300'
+                              : 'bg-defense-900 border-defense-700 text-slate-400 hover:border-slate-500'
+                          }`}
+                        >
+                          {crit}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2 pt-1">
+                    <div>
+                      <span className="text-slate-400 text-[10px] block">Shelf-Life (X):</span>
+                      <select
+                        value={taggedShelfLife}
+                        onChange={(e) => setTaggedShelfLife(Number(e.target.value))}
+                        className="w-full bg-defense-900 border border-defense-700 rounded px-2 py-1 text-slate-200 text-xs focus:outline-none focus:border-cyan-500"
+                      >
+                        <option value={5}>5 Years (Short-lived)</option>
+                        <option value={10}>10 Years (Financial)</option>
+                        <option value={15}>15 Years (Identity / SSO)</option>
+                        <option value={20}>20 Years (Archival)</option>
+                        <option value={25}>25+ Years (National / Biometrics)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <span className="text-slate-400 text-[10px] block">Key Rotation Policy:</span>
+                      <select
+                        value={taggedRotation}
+                        onChange={(e) => setTaggedRotation(e.target.value)}
+                        className="w-full bg-defense-900 border border-defense-700 rounded px-2 py-1 text-slate-200 text-xs focus:outline-none focus:border-cyan-500"
+                      >
+                        <option value="Annual (365d)">Annual (365 days)</option>
+                        <option value="Bi-Annual (180d)">Bi-Annual (180 days)</option>
+                        <option value="Quarterly (90d)">Quarterly (90 days)</option>
+                        <option value="No Rotation">No Rotation Policy (High Risk)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={handleSaveClassification}
+                    className="w-full py-1.5 mt-1 rounded bg-cyan-600 hover:bg-cyan-500 text-white font-bold text-xs flex items-center justify-center gap-1.5 transition-colors"
+                  >
+                    <Check className="w-3.5 h-3.5" />
+                    <span>SAVE &amp; PERSIST CLASSIFICATION TAGS</span>
+                  </button>
                 </div>
               </div>
 

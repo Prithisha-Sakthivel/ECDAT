@@ -4,6 +4,7 @@ export type NavigationTab =
   | 'inventory'
   | 'graph'
   | 'risk'
+  | 'recommendations'
   | 'simulator'
   | 'roadmap'
   | 'unknown'
@@ -306,3 +307,67 @@ export interface PostureTimelinePoint {
   unclassified: number;
   migrationReadiness: number;
 }
+
+export interface MoscaCalculation {
+  shelfLifeX: number;       // X = Security shelf-life of keys/data (years)
+  migrationTimeY: number;   // Y = Time required to migrate system to PQC (years)
+  crqcYearsZ: number;       // Z = Estimated time to CRQC (years)
+  targetCrqcYear: number;   // e.g. 2034
+  isVulnerable: boolean;    // (X + Y) > Z
+  riskMargin: number;       // (X + Y) - Z
+  groverImpact: string;     // Grover impact on symmetric keys (e.g. AES-128 -> 64-bit)
+  shorImpact: string;       // Shor impact on asymmetric keys (e.g. RSA/ECC -> broken)
+  recommendedAction: string;
+}
+
+export interface ApplicationHeatmapItem {
+  id: string;
+  appName: string;
+  team: string;
+  criticality: 'Critical' | 'High' | 'Medium' | 'Low';
+  totalArtefacts: number;
+  criticalCount: number;
+  highCount: number;
+  mediumCount: number;
+  lowCount: number;
+  shelfLifeX: number;
+  migrationTimeY: number;
+  moscaViolated: boolean;
+  dominantAlgo: string;
+  riskScore: number;
+  status: 'Violated' | 'At Risk' | 'Compliant';
+}
+
+export interface PqcRecommendation {
+  id: string;
+  currentAlgorithm: string;
+  cryptoType: 'Asymmetric Key Exchange' | 'Digital Signature' | 'Symmetric Encryption' | 'Hashing / Integrity';
+  recommendedPqc: string;
+  nistStandard: string;
+  hybridOption: string;
+  latencyScore: number; // 1-10 (10 = best/lowest overhead)
+  keySizeOverhead: string;
+  sigSizeOverhead: string;
+  reengineeringCost: 'Low' | 'Medium' | 'High';
+  libraryMaturity: 'Standardized / FIPS Ratified' | 'NIST Selected' | 'Round 4 Candidate';
+  justification: string;
+  tradeoffNotes: string;
+  exampleAssets: string[];
+}
+
+export interface NormalizedArtefact {
+  id: string;
+  type: 'algorithm' | 'key' | 'certificate' | 'protocol' | 'library' | 'hardware module' | 'cloud service';
+  location: string;
+  algorithm: string;
+  keySize: string;
+  mode: string;
+  libraryVersion: string;
+  language: string;
+  detectionSource: 'Source Code AST' | 'Binary Symbol / S-Box' | 'Container Layer' | 'X.509 Keystore' | 'Cloud KMS / HSM';
+  shelfLifeYears: number;
+  criticality: 'Critical' | 'High' | 'Medium' | 'Low';
+  quantumStatus: QuantumStatus;
+  notes: string;
+}
+

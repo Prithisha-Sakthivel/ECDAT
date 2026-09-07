@@ -16,6 +16,7 @@ import { EvidenceLedgerModule } from './components/ledger/EvidenceLedgerModule';
 import { PolicyComplianceModule } from './components/policy/PolicyComplianceModule';
 import { DecisionTraceModule } from './components/trace/DecisionTraceModule';
 import { AttackSurfaceModule } from './components/attack/AttackSurfaceModule';
+import { PqcRecommendationModule } from './components/recommendations/PqcRecommendationModule';
 import { ArtefactDetailDrawer } from './components/inventory/ArtefactDetailDrawer';
 import { WowMomentModal } from './components/common/WowMomentModal';
 import { ECDATIntelligence } from './components/ai/ECDATIntelligence';
@@ -38,6 +39,8 @@ export const App: React.FC = () => {
         return <DependencyGraph />;
       case 'risk':
         return <QuantumRiskEngine />;
+      case 'recommendations':
+        return <PqcRecommendationModule />;
       case 'simulator':
         return <ImpactSimulator />;
       case 'roadmap':

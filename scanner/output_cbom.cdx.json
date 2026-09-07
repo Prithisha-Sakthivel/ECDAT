@@ -1,0 +1,727 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:37fd52f7-985a-43ab-a6ef-e3ef74d9cf51",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-09-07T06:24:45.557214Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "ECDAT Cryptographic Discovery Engine",
+          "version": "2.4.0",
+          "description": "NTRO PS-26164 PQC Migration Assessment Tool"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "name": "Enterprise Discovered Cryptographic Estate",
+      "version": "1.0.0"
+    }
+  },
+  "components": [
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0001",
+      "name": "RSA",
+      "version": "Native API",
+      "description": "Detected Digital Signature / Key Exchange API call in from Crypto.PublicKey import RSA",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "2048-bit",
+          "classicalSecurityLevel": 112,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\auth_service.py:2",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": true,
+          "shelfLifeX": 15,
+          "migrationTimeY": 5,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA-65 (NIST FIPS 204)",
+          "hybridTransition": "Dual-Signature RSA + ML-DSA"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0002",
+      "name": "AES",
+      "version": "Native API",
+      "description": "Detected Data Encryption API call in from Crypto.Cipher import AES, PKCS1_OAEP",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "256-bit",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\auth_service.py:3",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": true,
+          "shelfLifeX": 10,
+          "migrationTimeY": 3,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "AES-256-GCM (Grover Resistance)",
+          "hybridTransition": "N/A (Classical Re-keying)"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0003",
+      "name": "RSA-2048",
+      "version": "Native API",
+      "description": "Detected Digital Signature / Key Exchange API call in rsa_key = RSA.generate(2048)",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "2048-bit",
+          "classicalSecurityLevel": 112,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\auth_service.py:9",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": true,
+          "shelfLifeX": 15,
+          "migrationTimeY": 5,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA-65 (NIST FIPS 204)",
+          "hybridTransition": "Dual-Signature RSA + ML-DSA"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0004",
+      "name": "AES-CBC",
+      "version": "Native API",
+      "description": "Detected Data Encryption API call in cipher = AES.new(b'16bytekey1234567', AES.MODE_CBC, iv=b'16byteinitvec123')",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "256-bit",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\auth_service.py:13",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": true,
+          "shelfLifeX": 10,
+          "migrationTimeY": 3,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "AES-256-GCM (Grover Resistance)",
+          "hybridTransition": "N/A (Classical Re-keying)"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0005",
+      "name": "TLS Legacy Context-TLSv1_1",
+      "version": "Native API",
+      "description": "Detected Transport Security API call in legacy_tls = ssl.SSLContext(ssl.PROTOCOL_TLSv1_1)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "N/A",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\auth_service.py:16",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0006",
+      "name": "TLS Protocol Context",
+      "version": "Native API",
+      "description": "Detected Transport Security API call in legacy_tls = ssl.SSLContext(ssl.PROTOCOL_TLSv1_1)",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "N/A",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\auth_service.py:16",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0007",
+      "name": "MD5/SHA-1-md5",
+      "version": "Native API",
+      "description": "Detected Integrity / Hashing API call in weak_hash = hashlib.md5(b\"test_payload\").hexdigest()",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "N/A",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\auth_service.py:19",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0008",
+      "name": "PKCS#11 Hardware Security Module (HSM)",
+      "version": "SDK Integration",
+      "description": "HSM Cryptographic Token Interface",
+      "cryptoProperties": {
+        "assetType": "hardware module",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "External / Managed",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Cloud KMS / HSM Stub Detector",
+          "fileLocation": "scanner/test_samples\\cloud_kms_and_hsm.py:4",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0009",
+      "name": "AWS KMS",
+      "version": "SDK Integration",
+      "description": "Cloud Key Management (AWS KMS)",
+      "cryptoProperties": {
+        "assetType": "cloud service",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "External / Managed",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Cloud KMS / HSM Stub Detector",
+          "fileLocation": "scanner/test_samples\\cloud_kms_and_hsm.py:7",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0010",
+      "name": "PKCS#11 Hardware Security Module (HSM)",
+      "version": "SDK Integration",
+      "description": "HSM Cryptographic Token Interface",
+      "cryptoProperties": {
+        "assetType": "hardware module",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "External / Managed",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Cloud KMS / HSM Stub Detector",
+          "fileLocation": "scanner/test_samples\\cloud_kms_and_hsm.py:13",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0011",
+      "name": "PKCS#11 Hardware Security Module (HSM)",
+      "version": "SDK Integration",
+      "description": "HSM Cryptographic Token Interface",
+      "cryptoProperties": {
+        "assetType": "hardware module",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "External / Managed",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Cloud KMS / HSM Stub Detector",
+          "fileLocation": "scanner/test_samples\\cloud_kms_and_hsm.py:14",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0012",
+      "name": "PKCS#11 Hardware Security Module (HSM)",
+      "version": "SDK Integration",
+      "description": "HSM Cryptographic Token Interface",
+      "cryptoProperties": {
+        "assetType": "hardware module",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "External / Managed",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Cloud KMS / HSM Stub Detector",
+          "fileLocation": "scanner/test_samples\\cloud_kms_and_hsm.py:15",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0013",
+      "name": "PKCS#11 Hardware Security Module (HSM)",
+      "version": "SDK Integration",
+      "description": "HSM Cryptographic Token Interface",
+      "cryptoProperties": {
+        "assetType": "hardware module",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "External / Managed",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Cloud KMS / HSM Stub Detector",
+          "fileLocation": "scanner/test_samples\\cloud_kms_and_hsm.py:16",
+          "language": "python"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0014",
+      "name": "OpenSSL EVP Asymmetric-EVP_PKEY_RSA",
+      "version": "Native API",
+      "description": "Detected Digital Signature / Kx API call in ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "N/A",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\crypto_core.c:11",
+          "language": "c_cpp"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": true,
+          "shelfLifeX": 15,
+          "migrationTimeY": 5,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA-65 (NIST FIPS 204)",
+          "hybridTransition": "Dual-Signature RSA + ML-DSA"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0015",
+      "name": "RSA Keygen-2048",
+      "version": "Native API",
+      "description": "Detected Key Generation API call in EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, 2048);",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "2048-bit",
+          "classicalSecurityLevel": 112,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\crypto_core.c:13",
+          "language": "c_cpp"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": true,
+          "shelfLifeX": 15,
+          "migrationTimeY": 5,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA-65 (NIST FIPS 204)",
+          "hybridTransition": "Dual-Signature RSA + ML-DSA"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0016",
+      "name": "OpenSSL TLS Context",
+      "version": "Native API",
+      "description": "Detected Transport Security API call in SSL_CTX *ssl_ctx = SSL_CTX_new(TLS_client_method());",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "N/A",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\crypto_core.c:17",
+          "language": "c_cpp"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0017",
+      "name": "TLS Minimum Protocol Version-TLS1_VERSION",
+      "version": "Native API",
+      "description": "Detected Transport Security API call in SSL_CTX_set_min_proto_version(ssl_ctx, TLS1_VERSION);",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "N/A",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\crypto_core.c:18",
+          "language": "c_cpp"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0018",
+      "name": "AES (Embedded S-Box Constant)",
+      "version": "Raw Binary Constant",
+      "description": "Found 256-byte AES S-Box table constant at offset 0x00000074",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "128/256-bit",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Binary Scanner (S-Box Constant Finder)",
+          "fileLocation": "scanner/test_samples\\libcustom_crypto.so:offset 0x00000074",
+          "language": "Binary (ELF/PE/Mach-O)"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": true,
+          "shelfLifeX": 10,
+          "migrationTimeY": 3,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "AES-256-GCM (Grover Resistance)",
+          "hybridTransition": "N/A (Classical Re-keying)"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0019",
+      "name": "OpenSSL Crypto Core",
+      "version": "Dynamic/Static Symbol",
+      "description": "Linked OpenSSL library",
+      "cryptoProperties": {
+        "assetType": "library",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "256-bit",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Binary Scanner (Symbol Table Inspection)",
+          "fileLocation": "scanner/test_samples\\libcustom_crypto.so:offset 0x00000048",
+          "language": "Binary"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0020",
+      "name": "RSA Key Operations (RSA_new)",
+      "version": "Dynamic/Static Symbol",
+      "description": "OpenSSL classical RSA symbol",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "2048-bit",
+          "classicalSecurityLevel": 112,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Binary Scanner (Symbol Table Inspection)",
+          "fileLocation": "scanner/test_samples\\libcustom_crypto.so:offset 0x00000059",
+          "language": "Binary"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": true,
+          "shelfLifeX": 15,
+          "migrationTimeY": 5,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA-65 (NIST FIPS 204)",
+          "hybridTransition": "Dual-Signature RSA + ML-DSA"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0021",
+      "name": "EVP_DigestSignInit",
+      "version": "Dynamic/Static Symbol",
+      "description": "OpenSSL digital signature dispatch",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "256-bit",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 3
+        },
+        "detectionContext": {
+          "source": "Binary Scanner (Symbol Table Inspection)",
+          "fileLocation": "scanner/test_samples\\libcustom_crypto.so:offset 0x00000061",
+          "language": "Binary"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA-65 (NIST FIPS 204)",
+          "hybridTransition": "Dual-Signature RSA + ML-DSA"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0022",
+      "name": "ECDSA P-256 (X.509 Certificate)",
+      "version": "v3 (RFC 5280)",
+      "description": "Parsed X.509 digital certificate public key credentials",
+      "cryptoProperties": {
+        "assetType": "certificate",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "2048-bit",
+          "classicalSecurityLevel": 112,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Certificate & Keystore Scanner",
+          "fileLocation": "scanner/test_samples\\root_ca.pem:L1",
+          "language": "Certificate/ASN.1"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": true,
+          "shelfLifeX": 15,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0023",
+      "name": "Diffie-Hellman-DiffieHellman",
+      "version": "Native API",
+      "description": "Detected Key Exchange API call in KeyPairGenerator dhGen = KeyPairGenerator.getInstance(\"DiffieHellman\");",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "N/A",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\TokenGenerator.java:18",
+          "language": "java"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-KEM-768 (NIST FIPS 203)",
+          "hybridTransition": "Hybrid X25519 + ML-KEM-768"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0024",
+      "name": "DES/3DES-DESede",
+      "version": "Native API",
+      "description": "Detected Data Encryption API call in KeyGenerator desGen = KeyGenerator.getInstance(\"DESede\");",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "N/A",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\TokenGenerator.java:22",
+          "language": "java"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "ECDAT-0025",
+      "name": "MD5/SHA-1-SHA-1",
+      "version": "Native API",
+      "description": "Detected Integrity API call in MessageDigest sha1 = MessageDigest.getInstance(\"SHA-1\");",
+      "cryptoProperties": {
+        "assetType": "protocol",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "N/A",
+          "classicalSecurityLevel": 256,
+          "nistQuantumSecurityLevel": 0
+        },
+        "detectionContext": {
+          "source": "Source Code AST / Regex Scanner",
+          "fileLocation": "scanner/test_samples\\TokenGenerator.java:26",
+          "language": "java"
+        },
+        "quantumRisk": {
+          "moscaConditionViolated": false,
+          "shelfLifeX": 5,
+          "migrationTimeY": 2,
+          "crqcArrivalZ": 8,
+          "recommendedPqc": "ML-DSA / ML-KEM Suite",
+          "hybridTransition": "NIST Post-Quantum Standard"
+        }
+      }
+    }
+  ]
+}
